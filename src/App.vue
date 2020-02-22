@@ -1,28 +1,185 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <v-app id="inspire">
+      <v-navigation-drawer
+        v-model="drawer"
+        hide-overlay
+        absolute
+        temporary
+        app
+      >
+        <v-list dense>
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Home</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-contact-mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Contact</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+      <v-app-bar
+        app
+        color="primary"
+      >
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+        <v-toolbar-title>Megamemo</v-toolbar-title>
+        <HeaderAccount></HeaderAccount>
+        <v-switch
+          v-model="$vuetify.theme.dark"
+          label="Darkmode"
+          color="accent"
+          class="toggleDark"
+        />
+      </v-app-bar>
+      <v-content>
+        <v-container
+          class="fill-height"
+          fluid
+        >
+          <v-row
+            align="center"
+            justify="center"
+          >
+            <v-col class="text-center">
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    :href="source"
+                    icon
+                    large
+                    target="_blank"
+                    v-on="on"
+                  >
+                    <v-icon large>mdi-code-tags</v-icon>
+                  </v-btn>
+                </template>
+                <span>Source</span>
+              </v-tooltip>
+
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    icon
+                    large
+                    href="https://codepen.io/johnjleider/pen/zgxeLQ"
+                    target="_blank"
+                    v-on="on"
+                  >
+                    <v-icon large>mdi-codepen</v-icon>
+                  </v-btn>
+                </template>
+                <span>Codepen</span>
+              </v-tooltip>
+              <v-dialog
+                v-model="dialog_signup"
+                width="500"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    color="secondary"
+                    dark
+                    v-on="on"
+                  >
+                    Signup
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-actions>
+                    <signup></signup>
+                    <v-btn
+                      color="accent"
+                      text
+                      @click="dialog_signup = false"
+                    >
+                      ok
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+              <v-dialog
+                v-model="dialog_signin"
+                width="500"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    color="secondary"
+                    dark
+                    v-on="on"
+                  >
+                    Signin
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-actions>
+                    <signin></signin>
+                    <v-btn
+                      color="accent"
+                      text
+                      @click="dialog_signin = false"
+                    >
+                      ok
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-content>
+      <v-footer
+        app
+        color="primary"
+      >
+        <span>&copy; 2019</span>
+      </v-footer>
+      <router-view />
+      <Overlay v-if="this.$store.idToken === null"></Overlay>
+    </v-app>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import HeaderAccount from './components/HeaderAccount';
+  import Overlay from './components/Overlay';
+  import Signup from './components/Signup';
+  import Signin from './components/Signin';
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  export default {
+    components: {
+      HeaderAccount,
+      Overlay,
+      Signup,
+      Signin
+    },
+    props: {
+      source: String,
+    },
+    data: () => ({
+      drawer: false,
+      dialog_signup: false,
+      dialog_signin: false,
+      dark: true,
+      color: "indigo darken-4"
+    }),
+    methods: {
+    }
   }
-}
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss" scoped>
+  .toggleDark {
+    position: absolute;
+    right: 2%;
+    top: 30%;
+  }
 </style>
