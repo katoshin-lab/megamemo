@@ -96,39 +96,6 @@
                 <v-card>
                   <v-card-actions>
                     <signup></signup>
-                    <v-btn
-                      color="accent"
-                      text
-                      @click="dialog_signup = false"
-                    >
-                      ok
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-dialog
-                v-model="dialog_signin"
-                width="500"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    color="secondary"
-                    dark
-                    v-on="on"
-                  >
-                    Signin
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-actions>
-                    <signin></signin>
-                    <v-btn
-                      color="accent"
-                      text
-                      @click="dialog_signin = false"
-                    >
-                      ok
-                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -149,17 +116,16 @@
 </template>
 
 <script>
+  // import firebase from 'firebase/app';
   import HeaderAccount from './components/HeaderAccount';
   import Overlay from './components/Overlay';
   import Signup from './components/Signup';
-  import Signin from './components/Signin';
 
   export default {
     components: {
       HeaderAccount,
       Overlay,
-      Signup,
-      Signin
+      Signup
     },
     props: {
       source: String,
@@ -169,9 +135,22 @@
       dialog_signup: false,
       dialog_signin: false,
       dark: true,
-      color: "indigo darken-4"
+      color: "indigo darken-4",
     }),
-    methods: {
+    created() {
+      this.$store.dispatch('account/loginInfo')
+      // firebase.auth().getRedirectResult().then((result) => {
+      //   if (result.credential) {
+      //     // eslint-disable-next-line no-console
+      //     console.log(result);
+      //     const userInfo = result.user
+      //     this.$store.dispatch('account/updateUserName', userInfo, { root: true })
+      //   }
+      // })
+      // .catch((result) => {
+      //   // eslint-disable-next-line no-console
+      //   console.log(result);
+      // })
     }
   }
 </script>
