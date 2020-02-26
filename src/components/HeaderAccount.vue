@@ -23,6 +23,7 @@
           large
           target="_blank"
           v-on="on"
+          @click="signOut"
         >
           <v-icon large>mdi-account-arrow-right</v-icon>
         </v-btn>
@@ -33,10 +34,12 @@
 </template>
 
 <script>
+import firebase from 'firebase';
+
 export default {
   data() {
     return {
-      name: ""
+      name: null
     }
   },
   computed: {
@@ -51,6 +54,18 @@ export default {
         return "Good evening";
       }
     }
+  },
+  methods: {
+    signOut() {
+      firebase.auth().signOut();
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      if (this.$store.state.account.name !== null) {
+        return this.name = ",\t" + this.$store.state.account.name
+      }
+    }, 5000);
   }
 }
 </script>
