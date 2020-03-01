@@ -2,11 +2,12 @@ import firebase from 'firebase/app';
 
 const state = {
   name: null,
-  idToken: null
+  uid: null
 };
 
 const getters = {
-  name: state => state.name
+  name: state => state.name,
+  uid: state => state.uid,
   headerMessage: state => {
     const now = new Date();
     const hours = now.getHours();
@@ -30,8 +31,8 @@ const mutations = {
   updateUserName(state, name) {
     state.name = name;
   },
-  updateIdToken(state, idToken) {
-    state.idToken = idToken
+  updateUserUid(state, uid) {
+    state.uid = uid
   }
 };
 
@@ -42,7 +43,7 @@ const actions = {
   },
   logout({commit}) {
     firebase.auth().signOut();
-    commit('updateIdToken', null);
+    commit('updateUserUid', null);
   },
   loginInfo({commit}) {
     firebase.auth().getRedirectResult().then((result) => {
@@ -50,7 +51,7 @@ const actions = {
         // eslint-disable-next-line no-console
         console.log(result);
         commit('updateUserName', result.user.displayName);
-        commit('updateIdToken', result.credential.idToken);
+        commit('updateUserUid', result.user.uid);
       }
     })
     .catch((error) => {
