@@ -143,6 +143,8 @@
         // eslint-disable-next-line no-console
         console.log(user);
         if (user) {
+          this.$store.commit('account/updateUserName', user.displayName);
+          this.$store.commit('account/updateUserUid', user.uid);
           this.overlay = false;
           this.dialog = false;
         } else {
