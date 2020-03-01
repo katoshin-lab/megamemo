@@ -85,15 +85,6 @@
                 persistent
                 width="500"
               >
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    color="secondary"
-                    dark
-                    v-on="on"
-                  >
-                    Signup
-                  </v-btn>
-                </template>
                 <v-card>
                   <v-card-actions>
                     <signup></signup>
