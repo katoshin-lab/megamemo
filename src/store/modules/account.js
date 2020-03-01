@@ -38,6 +38,7 @@ const mutations = {
 
 const actions = {
   login() {
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     const provider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithRedirect(provider);
   },
