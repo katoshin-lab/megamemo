@@ -23,6 +23,10 @@ const actions = {
     const provider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithRedirect(provider);
   },
+  logout({commit}) {
+    firebase.auth().signOut();
+    commit('updateIdToken', null);
+  },
   loginInfo({commit}) {
     firebase.auth().getRedirectResult().then((result) => {
       if (result.credential) {
