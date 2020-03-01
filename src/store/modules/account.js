@@ -7,6 +7,23 @@ const state = {
 
 const getters = {
   name: state => state.name
+  headerMessage: state => {
+    const now = new Date();
+    const hours = now.getHours();
+    var greeting = ""
+    if (hours >= 3 && hours <= 10) {
+      greeting = "Good morning";
+    } else if (hours >= 11 && hours <= 17) {
+      greeting = "Good afternoon";
+    } else {
+      greeting = "Good evening";
+    }
+    const messageName = ",\t" + state.name;
+    const headerMessage = state.name ? greeting + messageName : greeting;
+    // eslint-disable-next-line no-console
+    console.log(headerMessage);
+    return headerMessage;
+  }
 };
 
 const mutations = {
@@ -36,9 +53,9 @@ const actions = {
         commit('updateIdToken', result.credential.idToken);
       }
     })
-    .catch((result) => {
+    .catch((error) => {
       // eslint-disable-next-line no-console
-      console.log(result);
+      console.log(error);
     })
   }
 };
