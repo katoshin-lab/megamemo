@@ -81,7 +81,8 @@
                 <span>Codepen</span>
               </v-tooltip>
               <v-dialog
-                v-model="dialog_signup"
+                v-model="dialog"
+                persistent
                 width="500"
               >
                 <template v-slot:activator="{ on }">
@@ -109,22 +110,21 @@
       >
         <span>&copy; 2019</span>
       </v-footer>
-      <router-view />
-      <Overlay v-if="this.$store.idToken === null"></Overlay>
+      <v-overlay :value="overlay">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
     </v-app>
   </div>
 </template>
 
 <script>
-  // import firebase from 'firebase/app';
+  import firebase from 'firebase/app';
   import HeaderAccount from './components/HeaderAccount';
-  import Overlay from './components/Overlay';
   import Signup from './components/Signup';
 
   export default {
     components: {
       HeaderAccount,
-      Overlay,
       Signup
     },
     props: {
@@ -132,13 +132,25 @@
     },
     data: () => ({
       drawer: false,
-      dialog_signup: false,
-      dialog_signin: false,
+      dialog: false,
+      overlay: false,
       dark: true,
       color: "indigo darken-4",
     }),
-    created() {
-      this.$store.dispatch('account/loginInfo')
+    mounted() {
+      this.overlay = true
+      firebase.auth().onAuthStateChanged((user) => {
+        // eslint-disable-next-line no-console
+        console.log(user);
+        if (user) {
+          this.overlay = false;
+          this.dialog = false;
+        } else {
+          this.overlay = false;
+          this.dialog = true;
+        }
+      });
+      
       // firebase.auth().getRedirectResult().then((result) => {
       //   if (result.credential) {
       //     // eslint-disable-next-line no-console
