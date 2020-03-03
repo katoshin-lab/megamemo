@@ -8,24 +8,7 @@
         temporary
         app
       >
-        <v-list dense>
-          <v-list-item link>
-            <v-list-item-action>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Home</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Contact</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+      <drawerContent />
       </v-navigation-drawer>
       <v-app-bar
         app
@@ -65,7 +48,6 @@
                 </template>
                 <span>Source</span>
               </v-tooltip>
-
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <v-btn
@@ -112,11 +94,13 @@
   import firebase from 'firebase/app';
   import HeaderAccount from './components/HeaderAccount';
   import Signup from './components/Signup';
+  import drawerContent from './components/DrawerContent';
 
   export default {
     components: {
       HeaderAccount,
-      Signup
+      Signup,
+      drawerContent
     },
     props: {
       source: String,
