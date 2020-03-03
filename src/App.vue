@@ -8,24 +8,7 @@
         temporary
         app
       >
-        <v-list dense>
-          <v-list-item link>
-            <v-list-item-action>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Home</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Contact</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+      <drawerContent />
       </v-navigation-drawer>
       <v-app-bar
         app
@@ -65,7 +48,6 @@
                 </template>
                 <span>Source</span>
               </v-tooltip>
-
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <v-btn
@@ -81,54 +63,13 @@
                 <span>Codepen</span>
               </v-tooltip>
               <v-dialog
-                v-model="dialog_signup"
+                v-model="dialog"
+                persistent
                 width="500"
               >
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    color="secondary"
-                    dark
-                    v-on="on"
-                  >
-                    Signup
-                  </v-btn>
-                </template>
                 <v-card>
                   <v-card-actions>
                     <signup></signup>
-                    <v-btn
-                      color="accent"
-                      text
-                      @click="dialog_signup = false"
-                    >
-                      ok
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-dialog
-                v-model="dialog_signin"
-                width="500"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    color="secondary"
-                    dark
-                    v-on="on"
-                  >
-                    Signin
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-actions>
-                    <signin></signin>
-                    <v-btn
-                      color="accent"
-                      text
-                      @click="dialog_signin = false"
-                    >
-                      ok
-                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -142,36 +83,63 @@
       >
         <span>&copy; 2019</span>
       </v-footer>
-      <router-view />
-      <Overlay v-if="this.$store.idToken === null"></Overlay>
+      <v-overlay :value="overlay">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
     </v-app>
   </div>
 </template>
 
 <script>
+  import firebase from 'firebase/app';
   import HeaderAccount from './components/HeaderAccount';
-  import Overlay from './components/Overlay';
   import Signup from './components/Signup';
-  import Signin from './components/Signin';
+  import drawerContent from './components/DrawerContent';
 
   export default {
     components: {
       HeaderAccount,
-      Overlay,
       Signup,
-      Signin
+      drawerContent
     },
     props: {
       source: String,
     },
     data: () => ({
       drawer: false,
-      dialog_signup: false,
-      dialog_signin: false,
+      dialog: false,
+      overlay: false,
       dark: true,
-      color: "indigo darken-4"
+      color: "indigo darken-4",
     }),
-    methods: {
+    mounted() {
+      this.overlay = true
+      firebase.auth().onAuthStateChanged((user) => {
+        // eslint-disable-next-line no-console
+        console.log(user);
+        if (user) {
+          this.$store.commit('account/updateUserName', user.displayName);
+          this.$store.commit('account/updateUserUid', user.uid);
+          this.overlay = false;
+          this.dialog = false;
+        } else {
+          this.overlay = false;
+          this.dialog = true;
+        }
+      });
+      
+      // firebase.auth().getRedirectResult().then((result) => {
+      //   if (result.credential) {
+      //     // eslint-disable-next-line no-console
+      //     console.log(result);
+      //     const userInfo = result.user
+      //     this.$store.dispatch('account/updateUserName', userInfo, { root: true })
+      //   }
+      // })
+      // .catch((result) => {
+      //   // eslint-disable-next-line no-console
+      //   console.log(result);
+      // })
     }
   }
 </script>

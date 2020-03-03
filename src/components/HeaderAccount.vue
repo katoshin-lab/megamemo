@@ -1,7 +1,7 @@
 <template>
   <div class="account">
     <div class="account__message">
-      {{ msg }}{{ name }}!
+      {{ headerMessage }}!
     </div>
     <v-tooltip left>
       <template v-slot:activator="{ on }">
@@ -23,6 +23,7 @@
           large
           target="_blank"
           v-on="on"
+          @click="signOut"
         >
           <v-icon large>mdi-account-arrow-right</v-icon>
         </v-btn>
@@ -33,24 +34,24 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
-      name: ""
+      name: null
     }
   },
   computed: {
-    msg() {
-      const now = new Date();
-      const hours = now.getHours();
-      if (hours >= 3 && hours <= 10) {
-        return "Good morning";
-      } else if (hours >= 11 && hours <= 17) {
-        return "Good afternoon";
-      } else {
-        return "Good evening";
-      }
-    }
+    ...mapGetters({
+      headerMessage: 'account/headerMessage'
+    })
+  },
+  methods: {
+    signOut() {
+      this.$store.dispatch('account/logout')
+    },
+    
   }
 }
 </script>
