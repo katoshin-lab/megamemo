@@ -8,7 +8,7 @@
         temporary
         app
       >
-      <drawerContent />
+      <drawer-content />
       </v-navigation-drawer>
       <v-app-bar
         app
@@ -22,46 +22,17 @@
           label="Darkmode"
           color="accent"
           class="toggleDark"
+          name="toggleDark"
         />
       </v-app-bar>
       <v-content>
-        <v-container
-          class="fill-height"
-          fluid
-        >
+        <v-container>
           <v-row
             align="center"
             justify="center"
           >
             <v-col class="text-center">
-              <v-tooltip left>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    :href="source"
-                    icon
-                    large
-                    target="_blank"
-                    v-on="on"
-                  >
-                    <v-icon large>mdi-code-tags</v-icon>
-                  </v-btn>
-                </template>
-                <span>Source</span>
-              </v-tooltip>
-              <v-tooltip right>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    icon
-                    large
-                    href="https://codepen.io/johnjleider/pen/zgxeLQ"
-                    target="_blank"
-                    v-on="on"
-                  >
-                    <v-icon large>mdi-codepen</v-icon>
-                  </v-btn>
-                </template>
-                <span>Codepen</span>
-              </v-tooltip>
+              <main-content />
               <v-dialog
                 v-model="dialog"
                 persistent
@@ -94,16 +65,15 @@
   import firebase from 'firebase/app';
   import HeaderAccount from './components/HeaderAccount';
   import Signup from './components/Signup';
-  import drawerContent from './components/DrawerContent';
+  import DrawerContent from './components/DrawerContent';
+  import MainContent from './components/MainContent';
 
   export default {
     components: {
       HeaderAccount,
       Signup,
-      drawerContent
-    },
-    props: {
-      source: String,
+      DrawerContent,
+      MainContent
     },
     data: () => ({
       drawer: false,
