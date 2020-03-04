@@ -1,84 +1,71 @@
 <template>
   <div>
     <v-toolbar
-      min-width="50%"
-      class="line"
+      class="main-bar"
+      color="secondary"
     >
-      <v-toolbar-title>Title</v-toolbar-title>
+      <v-toolbar-title class="main-bar__title">Check</v-toolbar-title>
       <v-divider
-        class="mx-4"
         inset
         vertical
       ></v-divider>
-      <span class="subheading">My Home</span>
+      <v-toolbar-title class="main-bar__title">Task</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn text>
-          News
+          Limit
         </v-btn>
         <v-divider
           inset
           vertical
         ></v-divider>
         <v-btn text>
-          Blog
+          Estimated Time
         </v-btn>
         <v-divider
           inset
           vertical
         ></v-divider>
-        <v-btn text>
-          Music
+        <v-btn text class="main-bar__btn">
+          priority
         </v-btn>
-        <v-divider
-          inset
-          vertical
-        ></v-divider>
       </v-toolbar-items>
     </v-toolbar>
-    <v-divider></v-divider>
-    <v-card
-      min-width="50%"
-      class="margin"
-    >
-      <v-container fluid>
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col class="card">
-            <v-checkbox
-              v-model="isCompleted"
-              color="success"
-              name="isCompleted"
-              true-value="Completed!"
-            >
-            </v-checkbox>
-            <v-card-title>テストToDo</v-card-title>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
+    <v-divider 
+      class="divider"
+      filled
+    ></v-divider>
+    <todo-card />
   </div>
 </template>
 
 <script>
+import TodoCard from './Main/TodoCard';
+
 export default {
+  components: {
+    TodoCard
+  },
   data: () => ({
-    isCompleted: false,
   }),
   methods: {
   }
 }
 </script>
 
-<style lang="scss">
-  .margin {
-    margin: 10px 0;
+<style lang="scss" scoped>
+  .main-bar {
+    &__title {
+      display: inline-block;
+      margin: 0 2%;
+    }
+    &__btn {
+      width: 120px;
+    }
   }
 
-  .card {
-    display: flex;
-    padding: 0 12px;
+  .divider {
+    margin: 10px 0;
   }
+  
 </style>
