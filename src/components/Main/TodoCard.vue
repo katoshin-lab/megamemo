@@ -31,7 +31,7 @@
               v-on="on"
               :color="color"
               class="bar__btn"
-            >{{ selectPriority }}</v-btn>
+            >{{ priority }}</v-btn>
           </template>
           <v-list>
             <v-list-item
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data: () => ({
     isCompleted: false,
@@ -64,6 +66,17 @@ export default {
     ],
     color: "error"
   }),
+  methods: {
+    changePriority(input) {
+      const priority = input.toElement.innerText;
+      this.$store.commit('updatePriority', priority);
+    }
+  },
+  computed: {
+    ...mapGetters({
+      priority: 'priority'
+    })
+  }
 }
 </script>
 
