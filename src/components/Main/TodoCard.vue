@@ -29,13 +29,12 @@
           <template v-slot:activator="{ on }">
             <v-btn
               v-on="on"
-              :color="color"
+              :color="selectedPriority.color"
               class="bar__btn"
-            >{{ priority }}</v-btn>
+            >{{ selectedPriority.label }}</v-btn>
           </template>
           <v-list>
             <v-list-item
-              v-model="selectPriority"
               v-for="(priority, i) in priorities"
               :key="i"
               link
@@ -51,31 +50,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data: () => ({
     isCompleted: false,
-    selectPriority: "",
+    selectedPriority: {
+      label: 'Right Now',
+      color: 'red accent-3'
+    },
     priorities: [
       {label: 'Right Now'},
       {label: 'High'},
       {label: 'Middle'},
       {label: 'Low'},
       {label: 'Any Time'}
-    ],
-    color: "error"
+    ]
   }),
   methods: {
     changePriority(input) {
-      const priority = input.toElement.innerText;
-      this.$store.commit('updatePriority', priority);
+      const selectedPriorityLabel = input.toElement.innerText;
+      const selectedPriorityObj = this.$store.state.priority.find((v) => v.label === selectedPriorityLabel);
+      this.selectedPriority = selectedPriorityObj;
+      // eslint-disable-next-line no-console
+      console.log(selectedPriorityObj);
     }
-  },
-  computed: {
-    ...mapGetters({
-      priority: 'priority'
-    })
   }
 }
 </script>
