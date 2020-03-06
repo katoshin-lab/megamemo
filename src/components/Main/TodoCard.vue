@@ -70,8 +70,6 @@ export default {
       const selectedPriorityLabel = input.toElement.innerText;
       const selectedPriorityObj = this.$store.state.priority.find((v) => v.label === selectedPriorityLabel);
       this.selectedPriority = selectedPriorityObj;
-      // eslint-disable-next-line no-console
-      console.log(selectedPriorityObj);
     }
   }
 }
@@ -88,15 +86,11 @@ export default {
       margin: 0 2%;
       text-align: initial;
     }
-    &__limit {
-    }
     &__est {
       width: 162px;
     }
     &__btn {
       width: 120px;
-    }
-    &__priority {
     }
   }
 

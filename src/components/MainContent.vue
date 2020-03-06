@@ -30,6 +30,20 @@
           priority
         </v-btn>
       </v-toolbar-items>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            fab
+            class="main-bar__new"
+            color="accent"
+            v-on="on"
+            @click="newTodoDialog"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+        <span>New Todo</span>
+      </v-tooltip>
     </v-toolbar>
     <v-divider 
       class="divider"
@@ -42,13 +56,17 @@
 <script>
 import TodoCard from './Main/TodoCard';
 
+
 export default {
   components: {
-    TodoCard
+    TodoCard,
   },
   data: () => ({
   }),
   methods: {
+    newTodoDialog() {
+      this.$store.commit('toggleTodoDialog', true)
+    }
   }
 }
 </script>
@@ -61,6 +79,10 @@ export default {
     }
     &__btn {
       width: 120px;
+    }
+    &__new {
+      position: absolute;
+      left: -70px;
     }
   }
 

@@ -44,6 +44,12 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+              <v-dialog
+                persistent
+                v-model="this.$store.state.todoDialog"
+              >
+                <todo-dialog />
+              </v-dialog>
             </v-col>
           </v-row>
         </v-container>
@@ -67,13 +73,15 @@
   import Signup from './components/Signup';
   import DrawerContent from './components/DrawerContent';
   import MainContent from './components/MainContent';
+  import TodoDialog from './components/Main/NewTodo';
 
   export default {
     components: {
       HeaderAccount,
       Signup,
       DrawerContent,
-      MainContent
+      MainContent,
+      TodoDialog
     },
     data: () => ({
       drawer: false,
