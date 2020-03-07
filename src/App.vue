@@ -46,6 +46,7 @@
               </v-dialog>
               <v-dialog
                 persistent
+                width="60%"
                 v-model="this.$store.state.todoDialog"
               >
                 <todo-dialog />
