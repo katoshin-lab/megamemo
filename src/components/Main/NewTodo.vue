@@ -99,17 +99,23 @@
             <v-col>
               <v-slider
                 v-model="priority"
+                prepend-icon="mdi-format-list-numbered"
                 label="Priority"
                 max="4"
                 ticks="always"
                 :color="sliderColor"
+                :thumb-color="sliderColor"
                 track-color="gray"
-                :messages="sliderMessage"
+                :hint="sliderMessage"
+                persistent-hint
+                class="slider"
               ></v-slider>
             </v-col>
           </v-row>
           <v-row class="bottom-btn">
-            <v-col>
+            
+            <v-col></v-col>
+            <v-col md="auto">
               <v-btn
                 color="accent"
                 text
@@ -119,7 +125,7 @@
                 @click="closeTodoDialog"
               >CLOSE</v-btn>
             </v-col>
-            <v-col>
+            <v-col md="auto">
               <v-btn
                 color="accent"
                 relative
@@ -180,8 +186,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .bottom-btn {
-    display: flex;
-    margin-left: 70%;
-  }
+.slider {
+  padding-top: 15px;
+}
 </style>
