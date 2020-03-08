@@ -9,6 +9,7 @@
           <v-row>
             <v-col>
               <v-text-field 
+                v-model="todo.title"
                 label="Title"
                 outlined
                 color="accent"
@@ -20,6 +21,7 @@
           <v-row>
             <v-col>
               <v-textarea
+                v-model="todo.detail"
                 label="Detail"
                 outlined
                 color="accent"
@@ -39,7 +41,7 @@
                 <template v-slot:activator="{ on }">
                   <v-text-field
                     prepend-icon="mdi-calendar"
-                    v-model="date"
+                    v-model="todo.date"
                     :rules="[rules.required]"
                     label="Date"
                     readonly
@@ -48,7 +50,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="date"
+                  v-model="todo.date"
                   @input="dateMenu = false"
                   full-width
                   header-color="secondary"
@@ -60,14 +62,14 @@
                 v-model="timeMenu"
                 :close-on-content-click="false"
                 ref="menu"
-                :return-value.sync="time"
+                :return-value.sync="todo.time"
                 max-width="290px"
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
                     prepend-icon="mdi-clock-outline"
-                    v-model="time"
+                    v-model="todo.time"
                     :rules="[rules.required]"
                     label="Time"
                     readonly
@@ -77,10 +79,10 @@
                 </template>
                 <v-time-picker
                   v-if="timeMenu"
-                  v-model="time"
+                  v-model="todo.time"
                   full-width
                   header-color="secondary"
-                  @input="$refs.menu.save(time)"
+                  @input="$refs.menu.save(todo.time)"
                 ></v-time-picker>
               </v-menu>
             </v-col>
@@ -88,7 +90,7 @@
           <v-row>
             <v-col>
               <v-text-field
-                v-model="estimatedTime"
+                v-model="todo.estimatedTime"
                 prepend-icon="mdi-timer-sand"
                 label="Estimated Time"
                 color="accent"
@@ -98,7 +100,7 @@
             </v-col>
             <v-col>
               <v-slider
-                v-model="priority"
+                v-model="todo.priority"
                 prepend-icon="mdi-format-list-numbered"
                 label="Priority"
                 max="4"
@@ -131,7 +133,7 @@
                 relative
                 right
                 bottom
-                @click="closeTodoDialog"
+                @click="createTodo"
               >SAVE</v-btn>
             </v-col>
           </v-row>
@@ -145,13 +147,16 @@
 <script>
 export default {
   data: () =>  ({
-    date: "",
-    time: "",
+    todo: {
+      title: "",
+      detail: "",
+      date: "",
+      time: "",
+      estimatedTime: 0,
+      priority: 0,
+    },
     dateMenu: false,
     timeMenu: false,
-    estimatedTime: "",
-    priority: 0,
-    priorityMap: "",
     rules: {
       required: value => !!value || 'Required',
       integer: value => {
@@ -164,21 +169,28 @@ export default {
     closeTodoDialog() {
       this.$store.commit('toggleTodoDialog', false);
       // eslint-disable-next-line no-console
+      console.log(this.todo);
+    },
+    createTodo() {
+      this.$store.dispatch('firebase/createTodo', this.todo);
+      this.$store.commit('toggleTodoDialog', false);
+      // eslint-disable-next-line no-console
+      console.log(this.todo);
     }
   },
   computed: {
     sliderColor() {
-      if (this.priority === 0) return this.$store.state.priority[4].color
-      if (this.priority === 1) return this.$store.state.priority[3].color
-      if (this.priority === 2) return this.$store.state.priority[2].color
-      if (this.priority === 3) return this.$store.state.priority[1].color
+      if (this.todo.priority === 0) return this.$store.state.priority[4].color
+      if (this.todo.priority === 1) return this.$store.state.priority[3].color
+      if (this.todo.priority === 2) return this.$store.state.priority[2].color
+      if (this.todo.priority === 3) return this.$store.state.priority[1].color
       return this.$store.state.priority[0].color
     },
     sliderMessage() {
-      if (this.priority === 0) return this.$store.state.priority[4].label
-      if (this.priority === 1) return this.$store.state.priority[3].label
-      if (this.priority === 2) return this.$store.state.priority[2].label
-      if (this.priority === 3) return this.$store.state.priority[1].label
+      if (this.todo.priority === 0) return this.$store.state.priority[4].label
+      if (this.todo.priority === 1) return this.$store.state.priority[3].label
+      if (this.todo.priority === 2) return this.$store.state.priority[2].label
+      if (this.todo.priority === 3) return this.$store.state.priority[1].label
       return this.$store.state.priority[0].label
     }
   }
