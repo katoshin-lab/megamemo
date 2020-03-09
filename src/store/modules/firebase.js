@@ -18,12 +18,24 @@ const mutations = {
 };
 
 const actions = {
+  getTodo({state}, uid) {
+    const todoPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
+    todoPath.get()
+    .then(snapshot => {
+      const todoArray = [];
+      snapshot.forEach(doc => {
+        todoArray.push(doc.data())
+      })
+      // eslint-disable-next-line no-console
+      console.log(todoArray);
+    })
+  },
   createTodo({state}, todo) {
     const uid = account.state.uid
-    const path = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo')
+    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo')
     // eslint-disable-next-line no-console
-    console.log(path, todo);
-    path.add({
+    console.log(docPath, todo);
+    docPath.add({
       title: todo.title,
       detail: todo.detail,
       date: todo.date,

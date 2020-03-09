@@ -93,10 +93,11 @@
     }),
     mounted() {
       this.overlay = true
-      firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged(async (user) => {
         // eslint-disable-next-line no-console
         console.log(user);
         if (user) {
+          await this.$store.dispatch('firebase/getTodo', user.uid)
           this.$store.commit('account/updateUserName', user.displayName);
           this.$store.commit('account/updateUserUid', user.uid);
           this.overlay = false;
