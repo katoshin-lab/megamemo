@@ -12,15 +12,15 @@
           inset
           vertical
       ></v-divider>
-      <v-toolbar-title class="bar__task">Sample Todo</v-toolbar-title>
+      <v-toolbar-title class="bar__task">{{ todo.title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn class="bar__limit">3/8 19:00</v-btn>
+        <v-btn class="bar__limit">{{ todo.date }} {{ todo.time }}</v-btn>
         <v-divider
           inset
           vertical
         ></v-divider>
-        <v-btn class="bar__est">30min</v-btn>
+        <v-btn class="bar__est">{{ todo.estTime }}{{ min }}</v-btn>
         <v-divider
           inset
           vertical
@@ -29,18 +29,18 @@
           <template v-slot:activator="{ on }">
             <v-btn
               v-on="on"
-              :color="selectedPriority.color"
+              :color="priority[todo.priority].color"
               class="bar__btn"
-            >{{ selectedPriority.label }}</v-btn>
+            >{{ priority[todo.priority].label }}</v-btn>
           </template>
           <v-list>
             <v-list-item
-              v-for="(priority, i) in priorities"
+              v-for="(p, i) in priority"
               :key="i"
               link
               @click="changePriority"
             >
-              <v-list-item-title v-text="priority.label"></v-list-item-title>
+              <v-list-item-title v-text="p.label"></v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -50,34 +50,33 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   data: () => ({
     isCompleted: false,
-    selectedPriority: {
-      label: 'Right Now',
-      color: 'red accent-3'
-    },
-    priorities: [
-      {label: 'Right Now'},
-      {label: 'High'},
-      {label: 'Middle'},
-      {label: 'Low'},
-      {label: 'Any Time'}
-    ]
+    min: "\tmin"
   }),
+  props: ['todo'],
+  computed: {
+    ...mapState([
+      'priority'
+    ])
+  },
   methods: {
     changePriority(input) {
       const selectedPriorityLabel = input.toElement.innerText;
       const selectedPriorityObj = this.$store.state.priority.find((v) => v.label === selectedPriorityLabel);
       this.selectedPriority = selectedPriorityObj;
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
   .bar {
     cursor: pointer;
+    margin-bottom: 10px;
+
     &__checkbox {
       margin: 20px 1.4% 0 2% !important;
     }

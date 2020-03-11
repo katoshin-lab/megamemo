@@ -1,10 +1,11 @@
 import firebase from 'firebase/app';
 import account from './account'
 import { db } from '@/main'
-// import db from '@/plugins/firebase_config';
 
 const state = {
-  category: "Home"
+  category: "Home",
+  todoId: "",
+  todos: "",
 };
 
 const getters = {
@@ -14,28 +15,34 @@ const getters = {
 const mutations = {
   updateCategory(state, category) {
     state.category = category;
-  }
+  },
+  updateTodoId(state, idArray) {
+    state.todoId = idArray;
+  },
+  updateTodos(state, todoArray) {
+    state.todos = todoArray; 
+  },
 };
 
 const actions = {
-  getTodo({state}, uid) {
+  getTodo({state, commit}, uid) {
     const todoPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
     todoPath.get()
     .then(snapshot => {
       const todoArray = [];
+      const idArray = [];
       snapshot.forEach(doc => {
-        todoArray.push(doc.data())
+        idArray.push(doc.id);
+        todoArray.push(doc.data());
       })
-      // eslint-disable-next-line no-console
-      console.log(todoArray);
+      commit('updateTodoId', idArray);
+      commit('updateTodos', todoArray);
     })
   },
-  createTodo({state}, todo) {
+  createTodo({state, dispatch}, todo) {
     const uid = account.state.uid
-    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo')
-    // eslint-disable-next-line no-console
-    console.log(docPath, todo);
-    docPath.add({
+    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
+    const todoObj = {
       title: todo.title,
       detail: todo.detail,
       date: todo.date,
@@ -43,8 +50,12 @@ const actions = {
       estTime: todo.estimatedTime,
       priority: todo.priority,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    })
+    }
+    // eslint-disable-next-line no-console
+    console.log(docPath, todo);
+    docPath.add(todoObj)
     .then(response => {
+      dispatch('getTodo', uid);
       // eslint-disable-next-line no-console
       console.log(response);
     })
