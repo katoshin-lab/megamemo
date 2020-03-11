@@ -51,7 +51,7 @@
       </v-app-bar>
       <v-sheet
         id="todo-cards"
-        max-height="650"
+        max-height="80vh"
         class="cards overflow-y-auto"
       >
         <div

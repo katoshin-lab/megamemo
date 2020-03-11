@@ -51,13 +51,9 @@ const actions = {
       priority: todo.priority,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     }
-    // eslint-disable-next-line no-console
-    console.log(docPath, todo);
     docPath.add(todoObj)
-    .then(response => {
+    .then(() => {
       dispatch('getTodo', uid);
-      // eslint-disable-next-line no-console
-      console.log(response);
     })
     .catch(error => {
       // eslint-disable-next-line no-console
