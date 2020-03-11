@@ -93,15 +93,21 @@
     }),
     mounted() {
       this.overlay = true
-      firebase.auth().onAuthStateChanged(async (user) => {
+      firebase.auth().onAuthStateChanged((user) => {
         // eslint-disable-next-line no-console
         console.log(user);
         if (user) {
-          await this.$store.dispatch('firebase/getTodo', user.uid)
+          this.$store.dispatch('firebase/getTodo', user.uid)
           this.$store.commit('account/updateUserName', user.displayName);
           this.$store.commit('account/updateUserUid', user.uid);
-          this.overlay = false;
-          this.dialog = false;
+          const id = setInterval(() => {
+            if (this.$store.state.firebase.loading) {
+              this.$store.commit('firebase/toggleLoading', false)
+              this.overlay = false;
+              this.dialog = false;
+              clearInterval(id);
+            }
+          }, 200)
         } else {
           this.overlay = false;
           this.dialog = true;

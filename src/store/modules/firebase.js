@@ -6,6 +6,7 @@ const state = {
   category: "Home",
   todoId: "",
   todos: "",
+  loading: false
 };
 
 const getters = {
@@ -22,6 +23,9 @@ const mutations = {
   updateTodos(state, todoArray) {
     state.todos = todoArray; 
   },
+  toggleLoading(state, loading) {
+    state.loading = loading
+  }
 };
 
 const actions = {
@@ -29,6 +33,7 @@ const actions = {
     const todoPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
     todoPath.get()
     .then(snapshot => {
+      commit('toggleLoading', true);
       const todoArray = [];
       const idArray = [];
       snapshot.forEach(doc => {
