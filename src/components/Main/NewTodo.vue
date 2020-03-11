@@ -133,6 +133,7 @@
                 relative
                 right
                 bottom
+                :disabled="saveBtn"
                 @click="createTodo"
               >SAVE</v-btn>
             </v-col>
@@ -148,10 +149,10 @@
 export default {
   data: () =>  ({
     todo: {
-      title: "",
-      detail: "",
-      date: "",
-      time: "",
+      title: null,
+      detail: null,
+      date: null,
+      time: null,
       estimatedTime: 0,
       priority: 0,
     },
@@ -172,6 +173,10 @@ export default {
     createTodo() {
       this.$store.dispatch('firebase/createTodo', this.todo);
       this.$store.commit('toggleTodoDialog', false);
+      this.todo.title = null;
+      this.todo.detail = null;
+      this.todo.date = null;
+      this.todo.time = null;
     }
   },
   computed: {
@@ -188,6 +193,13 @@ export default {
       if (this.todo.priority === 2) return this.$store.state.priority[2].label
       if (this.todo.priority === 3) return this.$store.state.priority[3].label
       return this.$store.state.priority[4].label
+    },
+    saveBtn() {
+      if (this.todo.title && this.todo.detail && this.todo.date && this.todo.time) {
+        return false
+      } else {
+        return true
+      }
     }
   }
 }
