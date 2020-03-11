@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="overflow-hidden">
+    <v-card>
       <v-app-bar
         absolute
         elevate-on-scroll
@@ -8,6 +8,20 @@
         color="secondary"
         scroll-target="#todo-cards"
       >
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              fab
+              class="main-bar__new"
+              color="accent"
+              v-on="on"
+              @click="newTodoDialog"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+          <span>New Todo</span>
+        </v-tooltip>
         <v-toolbar-title class="main-bar__title">Check</v-toolbar-title>
         <v-divider
           inset
@@ -34,20 +48,6 @@
             priority
           </v-btn>
         </v-toolbar-items>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              fab
-              class="main-bar__new"
-              color="accent"
-              v-on="on"
-              @click="newTodoDialog"
-            >
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </template>
-          <span>New Todo</span>
-        </v-tooltip>
       </v-app-bar>
       <v-sheet
         id="todo-cards"
@@ -103,6 +103,7 @@ export default {
     }
     &__new {
       position: absolute;
+      top: 4px;
       left: -70px;
     }
   }
