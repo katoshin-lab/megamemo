@@ -8,7 +8,7 @@
         temporary
         app
       >
-      <drawerContent />
+      <drawer-content />
       </v-navigation-drawer>
       <v-app-bar
         app
@@ -22,46 +22,17 @@
           label="Darkmode"
           color="accent"
           class="toggleDark"
+          name="toggleDark"
         />
       </v-app-bar>
       <v-content>
-        <v-container
-          class="fill-height"
-          fluid
-        >
+        <v-container>
           <v-row
             align="center"
             justify="center"
           >
             <v-col class="text-center">
-              <v-tooltip left>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    :href="source"
-                    icon
-                    large
-                    target="_blank"
-                    v-on="on"
-                  >
-                    <v-icon large>mdi-code-tags</v-icon>
-                  </v-btn>
-                </template>
-                <span>Source</span>
-              </v-tooltip>
-              <v-tooltip right>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    icon
-                    large
-                    href="https://codepen.io/johnjleider/pen/zgxeLQ"
-                    target="_blank"
-                    v-on="on"
-                  >
-                    <v-icon large>mdi-codepen</v-icon>
-                  </v-btn>
-                </template>
-                <span>Codepen</span>
-              </v-tooltip>
+              <main-content />
               <v-dialog
                 v-model="dialog"
                 persistent
@@ -72,6 +43,13 @@
                     <signup></signup>
                   </v-card-actions>
                 </v-card>
+              </v-dialog>
+              <v-dialog
+                persistent
+                width="60%"
+                v-model="this.$store.state.todoDialog"
+              >
+                <todo-dialog />
               </v-dialog>
             </v-col>
           </v-row>
@@ -94,16 +72,17 @@
   import firebase from 'firebase/app';
   import HeaderAccount from './components/HeaderAccount';
   import Signup from './components/Signup';
-  import drawerContent from './components/DrawerContent';
+  import DrawerContent from './components/DrawerContent';
+  import MainContent from './components/MainContent';
+  import TodoDialog from './components/Main/NewTodo';
 
   export default {
     components: {
       HeaderAccount,
       Signup,
-      drawerContent
-    },
-    props: {
-      source: String,
+      DrawerContent,
+      MainContent,
+      TodoDialog
     },
     data: () => ({
       drawer: false,
@@ -114,10 +93,11 @@
     }),
     mounted() {
       this.overlay = true
-      firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged(async (user) => {
         // eslint-disable-next-line no-console
         console.log(user);
         if (user) {
+          await this.$store.dispatch('firebase/getTodo', user.uid)
           this.$store.commit('account/updateUserName', user.displayName);
           this.$store.commit('account/updateUserUid', user.uid);
           this.overlay = false;
