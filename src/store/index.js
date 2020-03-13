@@ -17,14 +17,18 @@ export default new Vuex.Store({
       { label: 'High', color: 'orange accent-3' },
       { label: 'Right Now', color: 'red accent-3' },
     ],
-    todoDialog: false
+    newTodoDialog: false,
+    todoDetailDialog: false,
   },
   getters: {
-    todoDialog: state => state.todoDialog
+    newTodoDialog: state => state.newTodoDialog
   },
   mutations: {
-    toggleTodoDialog(state, toggle) {
-      state.todoDialog = toggle
+    toggleNewTodoDialog(state, bool) {
+      state.newTodoDialog = bool
+    },
+    toggleTodoDetailDialog(state, bool) {
+      state.todoDetailDialog = bool
     }
   },
   actions,

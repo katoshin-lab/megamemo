@@ -13,7 +13,6 @@
 </template>
 
 <script>
-
 export default {
   methods: {
     signIn() {
@@ -25,6 +24,8 @@ export default {
 
 <style lang="scss" scoped>
   .dialog {
-    padding-right: 15px;
+    padding: 15px;
+    color: red;
+    font-weight: bold;
   }
 </style>

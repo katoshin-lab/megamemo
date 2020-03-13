@@ -8,12 +8,31 @@
         color="success"
       >
       </v-checkbox>
-      <v-divider
+      <template>
+        <v-fab-transition>
+          <v-btn
+            v-show="isCompleted"
+            color="red"
+            fab
+            small
+            absolute
+            left
+            class="bar__minus"
+            @click.stop="deleteTodo"
+          >
+            <v-icon>mdi-minus</v-icon>
+          </v-btn>
+        </v-fab-transition>
+      </template>
+      <template>
+        <v-divider
           inset
           vertical
-      ></v-divider>
-      <v-toolbar-title class="bar__task">{{ todo.title }}</v-toolbar-title>
-      <v-spacer></v-spacer>
+          class="bar__divider"
+        ></v-divider>
+        <v-toolbar-title class="bar__task" @click="todoDetailDialog">{{ todo.title }}</v-toolbar-title>
+        <v-spacer @click="todoDetailDialog" class="bar__spacer"></v-spacer>
+      </template>
       <v-toolbar-items>
         <v-btn class="bar__limit">{{ todo.date }} {{ todo.time }}</v-btn>
         <v-divider
@@ -56,34 +75,54 @@ export default {
     isCompleted: false,
     min: "\tmin"
   }),
-  props: ['todo'],
+  props: ['todo', 'index'],
   computed: {
     ...mapState([
       'priority'
     ])
   },
   methods: {
+    todoDetailDialog(input) {
+      // eslint-disable-next-line no-console
+      console.log(input);
+      this.$store.commit('toggleTodoDetailDialog', true);
+    },
     changePriority(input) {
       const selectedPriorityLabel = input.toElement.innerText;
       const selectedPriorityObj = this.$store.state.priority.find((v) => v.label === selectedPriorityLabel);
       this.selectedPriority = selectedPriorityObj;
-    }
+    },
+    deleteTodo() {
+      this.$store.dispatch('firebase/deleteTodo', this.index);
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
   .bar {
-    cursor: pointer;
     margin-bottom: 10px;
 
     &__checkbox {
-      margin: 20px 1.4% 0 2% !important;
+      margin-top: 20px !important;
+    }
+    &__minus {
+      left: 80px !important;
+    }
+    &__divider {
+      margin-left: 50px;
     }
     &__task {
       display: inline-block;
-      margin: 0 2%;
+      padding-left: 2%;
+      width: 27vw;
       text-align: initial;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    &__spacer {
+      cursor: pointer;
+      height: 40px;
     }
     &__est {
       width: 162px;
@@ -92,7 +131,6 @@ export default {
       width: 120px;
     }
   }
-
   .v-select {
     width: 120px;
     margin-left: 16px;

@@ -115,7 +115,6 @@
             </v-col>
           </v-row>
           <v-row class="bottom-btn">
-            
             <v-col></v-col>
             <v-col md="auto">
               <v-btn
@@ -124,7 +123,7 @@
                 relative
                 rigth
                 bottom
-                @click="closeTodoDialog"
+                @click="closeTodoDetail"
               >CLOSE</v-btn>
             </v-col>
             <v-col md="auto">
@@ -139,7 +138,6 @@
             </v-col>
           </v-row>
         </v-container>
-
       </v-card-text>
     </v-card>
   </div>
@@ -147,7 +145,7 @@
 
 <script>
 export default {
-  data: () =>  ({
+  data: () => ({
     todo: {
       title: null,
       detail: null,
@@ -156,8 +154,6 @@ export default {
       estimatedTime: 0,
       priority: 0,
     },
-    dateMenu: false,
-    timeMenu: false,
     rules: {
       required: value => !!value || 'Required',
       integer: value => {
@@ -167,46 +163,9 @@ export default {
     }
   }),
   methods: {
-    closeTodoDialog() {
-      this.$store.commit('toggleTodoDialog', false);
-    },
-    createTodo() {
-      this.$store.dispatch('firebase/createTodo', this.todo);
-      this.$store.commit('toggleTodoDialog', false);
-      this.todo.title = null;
-      this.todo.detail = null;
-      this.todo.date = null;
-      this.todo.time = null;
-    }
-  },
-  computed: {
-    sliderColor() {
-      if (this.todo.priority === 0) return this.$store.state.priority[0].color
-      if (this.todo.priority === 1) return this.$store.state.priority[1].color
-      if (this.todo.priority === 2) return this.$store.state.priority[2].color
-      if (this.todo.priority === 3) return this.$store.state.priority[3].color
-      return this.$store.state.priority[4].color
-    },
-    sliderMessage() {
-      if (this.todo.priority === 0) return this.$store.state.priority[0].label
-      if (this.todo.priority === 1) return this.$store.state.priority[1].label
-      if (this.todo.priority === 2) return this.$store.state.priority[2].label
-      if (this.todo.priority === 3) return this.$store.state.priority[3].label
-      return this.$store.state.priority[4].label
-    },
-    saveBtn() {
-      if (this.todo.title && this.todo.detail && this.todo.date && this.todo.time) {
-        return false
-      } else {
-        return true
-      }
+    closeTodoDetail() {
+      this.$store.commit('toggleTodoDetailDialog', false);
     }
   }
 }
 </script>
-
-<style lang="scss">
-.slider {
-  padding-top: 15px;
-}
-</style>
