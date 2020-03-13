@@ -19,6 +19,9 @@ const mutations = {
   updateTodos(state, todoArray) {
     state.todos = todoArray; 
   },
+  removeTodo(state, index) {
+    state.todos.splice(index, 1);
+  },
   toggleLoading(state, loading) {
     state.loading = loading
   }
@@ -32,7 +35,7 @@ const actions = {
       commit('toggleLoading', true);
       const todoArray = [];
       snapshot.forEach(doc => {
-        todoArray.push(doc.data());
+        todoArray.unshift(doc.data());
       })
       commit('updateTodos', todoArray);
     })
@@ -43,6 +46,7 @@ const actions = {
     const docId = "id" + String(date.getTime());
     const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
     const todoObj = {
+      id: docId,
       title: todo.title,
       detail: todo.detail,
       date: todo.date,
@@ -50,7 +54,6 @@ const actions = {
       estTime: todo.estimatedTime,
       priority: todo.priority,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      id: docId
     }
     // eslint-disable-next-line no-console
     console.log(docId, todoObj);
@@ -62,6 +65,13 @@ const actions = {
       // eslint-disable-next-line no-console
       console.log(error);
     })
+  },
+  deleteTodo({state, commit}, index) {
+    const uid = account.state.uid;
+    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
+    const id = state.todos[index].id;
+    docPath.doc(id).delete();
+    commit('removeTodo', index);
   }
 };
 

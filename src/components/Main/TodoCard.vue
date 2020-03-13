@@ -6,19 +6,19 @@
         messages="Completed!"
         class="bar__checkbox"
         color="success"
-        @mouseup.stop="checkBox"
       >
       </v-checkbox>
       <template>
         <v-fab-transition>
           <v-btn
             v-show="isCompleted"
-            color="pink"
+            color="red"
             fab
             small
             absolute
             left
             class="bar__minus"
+            @click.stop="deleteTodo"
           >
             <v-icon>mdi-minus</v-icon>
           </v-btn>
@@ -92,11 +92,9 @@ export default {
       const selectedPriorityObj = this.$store.state.priority.find((v) => v.label === selectedPriorityLabel);
       this.selectedPriority = selectedPriorityObj;
     },
-    checkBox() {
-      
-      
+    deleteTodo() {
+      this.$store.dispatch('firebase/deleteTodo', this.index);
     },
-    
   },
 }
 </script>
