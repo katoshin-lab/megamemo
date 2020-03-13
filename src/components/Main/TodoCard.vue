@@ -114,7 +114,8 @@ export default {
     }
     &__task {
       display: inline-block;
-      padding: 0 2%;
+      padding-left: 2%;
+      width: 27vw;
       text-align: initial;
       font-size: 1.4rem;
       cursor: pointer;
