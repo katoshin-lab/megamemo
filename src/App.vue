@@ -47,9 +47,16 @@
               <v-dialog
                 persistent
                 width="60%"
-                v-model="this.$store.state.todoDialog"
+                v-model="this.newTodo"
               >
-                <todo-dialog />
+                <new-todo />
+              </v-dialog>
+              <v-dialog
+                persistent
+                width="60%"
+                v-model="this.todoDetail"
+              >
+                <todo-detail />
               </v-dialog>
             </v-col>
           </v-row>
@@ -71,10 +78,12 @@
 <script>
   import firebase from 'firebase/app';
   import HeaderAccount from './components/HeaderAccount';
-  import Signup from './components/Signup';
   import DrawerContent from './components/DrawerContent';
   import MainContent from './components/MainContent';
-  import TodoDialog from './components/Main/NewTodo';
+  import Signup from './components/Dialog/Signup';
+  import newTodo from './components/Dialog/NewTodo';
+  import TodoDetail from './components/Dialog/TodoDetail';
+  import { mapState } from 'vuex';
 
   export default {
     components: {
@@ -82,7 +91,8 @@
       Signup,
       DrawerContent,
       MainContent,
-      TodoDialog
+      newTodo,
+      TodoDetail
     },
     data: () => ({
       drawer: false,
@@ -91,6 +101,12 @@
       dark: true,
       color: "indigo darken-4",
     }),
+    computed: {
+      ...mapState({
+        newTodo: 'newTodoDialog',
+        todoDetail: 'todoDetailDialog'
+      })
+    },
     mounted() {
       this.overlay = true
       firebase.auth().onAuthStateChanged((user) => {

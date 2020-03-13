@@ -22,7 +22,7 @@
           </template>
           <span>New Todo</span>
         </v-tooltip>
-        <v-toolbar-title class="main-bar__title">Check</v-toolbar-title>
+        <v-toolbar-title class="main-bar__check">Check</v-toolbar-title>
         <v-divider
           inset
           vertical
@@ -55,11 +55,12 @@
         class="cards overflow-y-auto"
       >
         <div
-          v-for="todo in this.$store.state.firebase.todos"
+          v-for="(todo, index) in this.$store.state.firebase.todos"
           :key="todo.title"
         >
           <todo-card
             :todo="todo"
+            :index="index"
           ></todo-card>
         </div>
       </v-sheet>
@@ -69,7 +70,7 @@
 
 <script>
 import TodoCard from './Main/TodoCard';
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -84,7 +85,7 @@ export default {
   },
   methods: {
     newTodoDialog() {
-      this.$store.commit('toggleTodoDialog', true)
+      this.$store.commit('toggleNewTodoDialog', true)
       // eslint-disable-next-line no-console
       console.log(this.$store.state.firebase.todos);
     }
@@ -94,9 +95,13 @@ export default {
 
 <style lang="scss" scoped>
   .main-bar {
-    &__title {
+    &__check {
       display: inline-block;
-      margin: 0 2%;
+      margin-left: 25px;
+      margin-right: 32px;
+    }
+    &__title {
+      margin-left: 2%;
     }
     &__btn {
       width: 120px;

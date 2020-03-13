@@ -139,7 +139,6 @@
             </v-col>
           </v-row>
         </v-container>
-
       </v-card-text>
     </v-card>
   </div>
@@ -168,15 +167,17 @@ export default {
   }),
   methods: {
     closeTodoDialog() {
-      this.$store.commit('toggleTodoDialog', false);
+      this.$store.commit('toggleNewTodoDialog', false);
     },
     createTodo() {
       this.$store.dispatch('firebase/createTodo', this.todo);
-      this.$store.commit('toggleTodoDialog', false);
+      this.$store.commit('toggleNewTodoDialog', false);
       this.todo.title = null;
       this.todo.detail = null;
       this.todo.date = null;
       this.todo.time = null;
+      this.todo.estimatedTime = 0;
+      this.todo.priority = 0;
     }
   },
   computed: {
