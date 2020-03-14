@@ -102,7 +102,6 @@
             <v-col >
               <v-slider
                 v-model="todo.priority"
-                @click="test"
                 prepend-icon="mdi-format-list-numbered"
                 label="Priority"
                 max="4"
@@ -135,6 +134,7 @@
                 right
                 bottom
                 :disabled="updateBtn"
+                @click="updateTodo"
               >UPDATE</v-btn>
             </v-col>
           </v-row>
@@ -193,10 +193,6 @@ export default {
   methods: {
     closeTodoDetail() {
       this.$store.commit('toggleTodoDetailDialog', false);
-    },
-    test() {
-      // eslint-disable-next-line no-console
-      console.log(this.todo);
     }
   },
   mounted() {
