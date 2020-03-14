@@ -82,9 +82,8 @@ export default {
     ])
   },
   methods: {
-    todoDetailDialog(input) {
-      // eslint-disable-next-line no-console
-      console.log(input);
+    todoDetailDialog() {
+      this.$store.dispatch('firebase/selectedTodo', this.index);
       this.$store.commit('toggleTodoDetailDialog', true);
     },
     changePriority(input) {

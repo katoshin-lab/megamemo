@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title>
-        <span class="headline">New Todo</span>
+        <span class="headline">{{ selectedTodo.title }}</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -10,6 +10,7 @@
             <v-col>
               <v-text-field 
                 v-model="todo.title"
+                ref="title"
                 label="Title"
                 outlined
                 color="accent"
@@ -107,14 +108,24 @@
                 ticks="always"
                 :color="sliderColor"
                 :thumb-color="sliderColor"
-                track-color="gray"
                 :hint="sliderMessage"
+                track-color="gray"
                 persistent-hint
                 class="slider"
               ></v-slider>
             </v-col>
           </v-row>
           <v-row class="bottom-btn">
+            <v-col>
+              <v-btn
+                color="red"
+                outlined
+                relative
+                left
+                bottom
+                @click="deleteTodo"
+              >DELETE</v-btn>
+            </v-col>
             <v-col></v-col>
             <v-col md="auto">
               <v-btn
@@ -132,9 +143,9 @@
                 relative
                 right
                 bottom
-                :disabled="saveBtn"
-                @click="createTodo"
-              >SAVE</v-btn>
+                :disabled="updateBtn"
+                @click="updateTodo"
+              >UPDATE</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -144,6 +155,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data: () => ({
     todo: {
@@ -154,6 +167,8 @@ export default {
       estimatedTime: 0,
       priority: 0,
     },
+    dateMenu: false,
+    timeMenu: false,
     rules: {
       required: value => !!value || 'Required',
       integer: value => {
@@ -162,10 +177,60 @@ export default {
       }
     }
   }),
+  computed: {
+    ...mapGetters('firebase', ['selectedTodo', 'selectedTodoIndex']),
+    sliderColor() {
+      const n = this.todo.priority;
+      return this.$store.state.priority[n].color
+    },
+    sliderMessage() {
+      const n = this.todo.priority;
+      return this.$store.state.priority[n].label
+    },
+    updateBtn() {
+      if (this.selectedTodo.title === this.todo.title 
+      && this.selectedTodo.detail === this.todo.detail
+      && this.selectedTodo.date === this.todo.date
+      && this.selectedTodo.time === this.todo.time
+      && this.selectedTodo.estTime === this.todo.estimatedTime
+      && this.selectedTodo.priority === this.todo.priority) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
   methods: {
     closeTodoDetail() {
       this.$store.commit('toggleTodoDetailDialog', false);
+    },
+    updateTodo() {
+      this.$store.dispatch('firebase/updateTodo', this.todo);
+      this.$store.commit('toggleTodoDetailDialog', false);
+    },
+    deleteTodo() {
+      this.$store.dispatch('firebase/deleteTodo', this.selectedTodoIndex)
+      this.$store.commit('toggleTodoDetailDialog', false);
     }
+  },
+  mounted() {
+    // refreshing data
+    this.todo.title = this.selectedTodo.title;
+    this.todo.detail = this.selectedTodo.detail;
+    this.todo.date = this.selectedTodo.date;
+    this.todo.time = this.selectedTodo.time;
+    this.todo.estimatedTime = this.selectedTodo.estTime;
+    this.todo.priority = this.selectedTodo.priority;
+    this.$store.subscribe((mutation, state) => {
+      if (mutation.type === 'firebase/selectedTodo') {
+        this.todo.title = state.firebase.selectedTodo.title;
+        this.todo.detail = state.firebase.selectedTodo.detail;
+        this.todo.date = state.firebase.selectedTodo.date;
+        this.todo.time = state.firebase.selectedTodo.time;
+        this.todo.estimatedTime = state.firebase.selectedTodo.estTime;
+        this.todo.priority = state.firebase.selectedTodo.priority;
+      }
+    })
   }
 }
 </script>
