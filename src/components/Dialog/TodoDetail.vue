@@ -99,7 +99,7 @@
                 suffix="min"
               ></v-text-field>
             </v-col>
-            <v-col >
+            <v-col>
               <v-slider
                 v-model="todo.priority"
                 prepend-icon="mdi-format-list-numbered"
@@ -116,6 +116,16 @@
             </v-col>
           </v-row>
           <v-row class="bottom-btn">
+            <v-col>
+              <v-btn
+                color="red"
+                outlined
+                relative
+                left
+                bottom
+                @click="deleteTodo"
+              >DELETE</v-btn>
+            </v-col>
             <v-col></v-col>
             <v-col md="auto">
               <v-btn
@@ -168,7 +178,7 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters('firebase', ['selectedTodo']),
+    ...mapGetters('firebase', ['selectedTodo', 'selectedTodoIndex']),
     sliderColor() {
       const n = this.todo.priority;
       return this.$store.state.priority[n].color
@@ -192,6 +202,14 @@ export default {
   },
   methods: {
     closeTodoDetail() {
+      this.$store.commit('toggleTodoDetailDialog', false);
+    },
+    updateTodo() {
+      this.$store.dispatch('firebase/updateTodo', this.todo);
+      this.$store.commit('toggleTodoDetailDialog', false);
+    },
+    deleteTodo() {
+      this.$store.dispatch('firebase/deleteTodo', this.selectedTodoIndex)
       this.$store.commit('toggleTodoDetailDialog', false);
     }
   },

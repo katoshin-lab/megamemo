@@ -6,12 +6,14 @@ const state = {
   category: "Home",
   todos: "",
   selectedTodo: null,
+  selectedTodoIndex: 0,
   loading: false
 };
 
 const getters = {
   todos: state => state.todos,
-  selectedTodo: state => state.selectedTodo
+  selectedTodo: state => state.selectedTodo,
+  selectedTodoIndex: state => state.selectedTodoIndex
 };
 
 const mutations = {
@@ -26,6 +28,9 @@ const mutations = {
   },
   selectedTodo(state, selectedTodo) {
     state.selectedTodo = selectedTodo;
+  },
+  updateSelectedTodoIndex(state, selectedTodoIndex) {
+    state.selectedTodoIndex = selectedTodoIndex;
   },
   toggleLoading(state, loading) {
     state.loading = loading
@@ -59,12 +64,34 @@ const actions = {
       estTime: todo.estimatedTime,
       priority: todo.priority,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     }
-    // eslint-disable-next-line no-console
-    console.log(docId, todoObj);
     docPath.doc(docId).set(todoObj)
-    .then(() => {
+    .then((response) => {
       dispatch('getTodo', uid);
+      // eslint-disable-next-line no-console
+      console.log(response);
+    })
+    .catch(error => {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    })
+  },
+  updateTodo({state, dispatch}, todo) {
+    const uid = account.state.uid;
+    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
+    const id = state.selectedTodo.id;
+    docPath.doc(id).update({
+      title: todo.title,
+      detail: todo.detail,
+      date: todo.date,
+      time: todo.time,
+      estTime: todo.estimatedTime,
+      priority: todo.priority,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      dispatch('getTodo', uid)
     })
     .catch(error => {
       // eslint-disable-next-line no-console
@@ -81,8 +108,7 @@ const actions = {
   selectedTodo({state, commit}, index) {
     const selectedTodo = state.todos[index];
     commit('selectedTodo', selectedTodo);
-    // eslint-disable-next-line no-console
-    console.log(selectedTodo);
+    commit('updateSelectedTodoIndex', index);
   }
 };
 
