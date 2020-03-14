@@ -55,7 +55,7 @@
         class="cards overflow-y-auto"
       >
         <div
-          v-for="(todo, index) in this.$store.state.firebase.todos"
+          v-for="(todo, index) in todos"
           :key="todo.title"
         >
           <todo-card
@@ -79,15 +79,11 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapState({
-      todos: 'firebase/todos',
-    })
+    ...mapState('firebase', ['todos'])
   },
   methods: {
     newTodoDialog() {
       this.$store.commit('toggleNewTodoDialog', true)
-      // eslint-disable-next-line no-console
-      console.log(this.$store.state.firebase.todos);
     }
   }
 }

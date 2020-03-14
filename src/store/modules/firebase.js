@@ -5,11 +5,13 @@ import { db } from '@/main'
 const state = {
   category: "Home",
   todos: "",
+  selectedTodo: null,
   loading: false
 };
 
 const getters = {
-
+  todos: state => state.todos,
+  selectedTodo: state => state.selectedTodo
 };
 
 const mutations = {
@@ -21,6 +23,9 @@ const mutations = {
   },
   removeTodo(state, index) {
     state.todos.splice(index, 1);
+  },
+  selectedTodo(state, selectedTodo) {
+    state.selectedTodo = selectedTodo;
   },
   toggleLoading(state, loading) {
     state.loading = loading
@@ -72,6 +77,12 @@ const actions = {
     const id = state.todos[index].id;
     docPath.doc(id).delete();
     commit('removeTodo', index);
+  },
+  selectedTodo({state, commit}, index) {
+    const selectedTodo = state.todos[index];
+    commit('selectedTodo', selectedTodo);
+    // eslint-disable-next-line no-console
+    console.log(selectedTodo);
   }
 };
 
