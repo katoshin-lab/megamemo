@@ -70,7 +70,7 @@
 
 <script>
 import TodoCard from './Main/TodoCard';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -79,7 +79,7 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapState('firebase', ['todos'])
+    ...mapGetters('firebase', ['todos'])
   },
   methods: {
     newTodoDialog() {
