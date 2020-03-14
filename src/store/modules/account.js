@@ -21,8 +21,6 @@ const getters = {
     }
     const messageName = ",\t" + state.name;
     const headerMessage = state.name ? greeting + messageName : greeting;
-    // eslint-disable-next-line no-console
-    console.log(headerMessage);
     return headerMessage;
   }
 };
