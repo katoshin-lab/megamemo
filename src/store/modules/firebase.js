@@ -5,20 +5,24 @@ import { db } from '@/main'
 const state = {
   category: "Home",
   todos: "",
-  selectedTodo: null,
+  selectedTodo: "",
   selectedTodoIndex: 0,
+  categories: "",
+  selectedCategory: "Home",
+  selectedCategoryIndex: 0,
   loading: false
 };
 
 const getters = {
   todos: state => state.todos,
   selectedTodo: state => state.selectedTodo,
-  selectedTodoIndex: state => state.selectedTodoIndex
+  selectedTodoIndex: state => state.selectedTodoIndex,
+  categories: state => state.categories,
 };
 
 const mutations = {
-  updateCategory(state, category) {
-    state.category = category;
+  addTodo(state, todoObj) {
+    state.todos.unshift(todoObj);
   },
   updateTodos(state, todoArray) {
     state.todos = todoArray; 
@@ -32,6 +36,18 @@ const mutations = {
   updateSelectedTodoIndex(state, selectedTodoIndex) {
     state.selectedTodoIndex = selectedTodoIndex;
   },
+  updateSelectedCstegory(state, selectedCategory) {
+    state.selectedCategory = selectedCategory;
+  },
+  updateSelectedCategoryIndex(state, selectedCategoryIndex) {
+    state.selectedCategoryIndex = selectedCategoryIndex;
+  },
+  addCategory(state, category) {
+    state.categories.push(category);
+  },
+  updateCategory(state, categoryArray) {
+    state.categories = categoryArray;
+  },
   toggleLoading(state, loading) {
     state.loading = loading
   }
@@ -39,7 +55,7 @@ const mutations = {
 
 const actions = {
   getTodo({state, commit}, uid) {
-    const todoPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
+    const todoPath = db.collection('users').doc(uid).collection('category').doc(state.selectedCategory).collection('todo');
     todoPath.get()
     .then(snapshot => {
       commit('toggleLoading', true);
@@ -50,11 +66,9 @@ const actions = {
       commit('updateTodos', todoArray);
     })
   },
-  createTodo({state, dispatch}, todo) {
-    const uid = account.state.uid
+  createTodo({state, commit}, todo) {
     const date = new Date();
     const docId = "id" + String(date.getTime());
-    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
     const todoObj = {
       id: docId,
       title: todo.title,
@@ -66,11 +80,11 @@ const actions = {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     }
+    commit('addTodo', todoObj);
+    const uid = account.state.uid
+    const docPath = db.collection('users').doc(uid).collection('category').doc(state.selectedCategory).collection('todo');
     docPath.doc(docId).set(todoObj)
-    .then((response) => {
-      dispatch('getTodo', uid);
-      // eslint-disable-next-line no-console
-      console.log(response);
+    .then(() => {
     })
     .catch(error => {
       // eslint-disable-next-line no-console
@@ -79,7 +93,7 @@ const actions = {
   },
   updateTodo({state, dispatch}, todo) {
     const uid = account.state.uid;
-    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
+    const docPath = db.collection('users').doc(uid).collection('category').doc(state.selectedCategory).collection('todo');
     const id = state.selectedTodo.id;
     docPath.doc(id).update({
       title: todo.title,
@@ -100,7 +114,7 @@ const actions = {
   },
   deleteTodo({state, commit}, index) {
     const uid = account.state.uid;
-    const docPath = db.collection('users').doc(uid).collection('category').doc(state.category).collection('todo');
+    const docPath = db.collection('users').doc(uid).collection('category').doc(state.selectedCategory).collection('todo');
     const id = state.todos[index].id;
     docPath.doc(id).delete();
     commit('removeTodo', index);
@@ -109,6 +123,46 @@ const actions = {
     const selectedTodo = state.todos[index];
     commit('selectedTodo', selectedTodo);
     commit('updateSelectedTodoIndex', index);
+  },
+  getCategory({commit}, uid) {
+    const docPath = db.collection('users').doc(uid).collection('settings').doc('category').collection('labels');
+    docPath.get()
+    .then(snapshot => {
+      const categoryArray = ['Home'];
+      snapshot.forEach(doc => {
+        categoryArray.push(doc.data().label)
+      })
+      commit('updateCategory', categoryArray);
+      // eslint-disable-next-line no-console
+      console.log(categoryArray);
+    })
+    .catch(error => {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    })
+  },
+  addCategory({commit}, category) {
+    commit('addCategory', category);
+    const uid = account.state.uid;
+    const docPath = db.collection('users').doc(uid).collection('settings').doc('category').collection('labels');
+    docPath.add({label: category})
+    .then(r => {
+      // eslint-disable-next-line no-console
+      console.log(r);
+    })
+    .catch(e => {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    })
+  },
+  selectedCategory({state, commit, dispatch}, index) {
+    const selectedCategory = state.categories[index];
+    if (selectedCategory !== state.selectedCategory) {
+      const uid = account.state.uid
+      commit('updateSelectedCstegory', selectedCategory);
+      commit('updateSelectedCategoryIndex', index);
+      dispatch('getTodo', uid);
+    }
   }
 };
 

@@ -8,7 +8,7 @@
         temporary
         app
       >
-      <drawer-content />
+        <drawer-content />
       </v-navigation-drawer>
       <v-app-bar
         app
@@ -114,6 +114,7 @@
         console.log(user);
         if (user) {
           this.$store.dispatch('firebase/getTodo', user.uid)
+          this.$store.dispatch('firebase/getCategory', user.uid)
           this.$store.commit('account/updateUserName', user.displayName);
           this.$store.commit('account/updateUserUid', user.uid);
           const id = setInterval(() => {
