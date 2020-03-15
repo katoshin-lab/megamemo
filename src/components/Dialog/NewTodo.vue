@@ -182,18 +182,12 @@ export default {
   },
   computed: {
     sliderColor() {
-      if (this.todo.priority === 0) return this.$store.state.priority[0].color
-      if (this.todo.priority === 1) return this.$store.state.priority[1].color
-      if (this.todo.priority === 2) return this.$store.state.priority[2].color
-      if (this.todo.priority === 3) return this.$store.state.priority[3].color
-      return this.$store.state.priority[4].color
+      const n = this.todo.priority
+      return this.$store.state.priority[n].color
     },
     sliderMessage() {
-      if (this.todo.priority === 0) return this.$store.state.priority[0].label
-      if (this.todo.priority === 1) return this.$store.state.priority[1].label
-      if (this.todo.priority === 2) return this.$store.state.priority[2].label
-      if (this.todo.priority === 3) return this.$store.state.priority[3].label
-      return this.$store.state.priority[4].label
+      const n = this.todo.priority
+      return this.$store.state.priority[n].label
     },
     saveBtn() {
       if (this.todo.title && this.todo.detail && this.todo.date && this.todo.time) {
