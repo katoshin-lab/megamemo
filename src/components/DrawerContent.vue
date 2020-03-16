@@ -31,6 +31,13 @@
         @click="addCategory"
       >ADD</v-btn>
     </div>
+    <v-btn
+        color="red"
+        absolute
+        bottom
+        right
+        small
+      >Delete Selected Category</v-btn>
   </div>
 </template>
 
@@ -62,7 +69,7 @@ export default {
     width: 100%;
 
     &__list {
-      height: 80%;
+      height: 75%;
       width: 100%;
     }
 
