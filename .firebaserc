@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "megamemo-1420f"
+    "default": "megamemo-1420f",
+    "staging": "megamemo-1420f"
   }
 }
