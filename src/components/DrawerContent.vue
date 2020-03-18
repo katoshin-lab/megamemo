@@ -32,12 +32,13 @@
       >ADD</v-btn>
     </div>
     <v-btn
-        color="red"
-        absolute
-        bottom
-        right
-        small
-      >Delete Selected Category</v-btn>
+      class="drawer__delete"
+      color="red"
+      absolute
+      bottom
+      right
+      small
+    >Delete Selected Category</v-btn>
   </div>
 </template>
 
@@ -75,6 +76,10 @@ export default {
 
     &__form {
       padding: 20px;
+    }
+
+    &__delete {
+      margin: 0 5px;
     }
   }
   .group {
