@@ -6,6 +6,7 @@
     >
       <div class="dialog">You required to sign in!</div>
       <v-btn @click="signIn">
+        <v-icon class="dialog__google">mdi-google</v-icon>
         Access Your Google Account
       </v-btn>
     </v-row>
@@ -27,5 +28,8 @@ export default {
     padding: 15px;
     color: red;
     font-weight: bold;
+    &__google {
+      padding-right: 10px;
+    }
   }
 </style>
