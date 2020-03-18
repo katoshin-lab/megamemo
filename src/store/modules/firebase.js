@@ -48,6 +48,9 @@ const mutations = {
   updateCategory(state, categoryArray) {
     state.categories = categoryArray;
   },
+  removeCategory(state, index) {
+    state.categories.splice(index, 1);
+  },
   toggleLoading(state, loading) {
     state.loading = loading
   },
@@ -165,15 +168,16 @@ const actions = {
       dispatch('getTodo', uid);
     }
   },
-  deleteCategory({state, commit}) {
-    // 一つ上のカテゴリーを選択
+  deleteCategory({state, commit, dispatch}) {
     if (state.selectedCategoryIndex !== 0) {
-      const newIndex = state.selectedCategoryIndex - 1;
+      const newIndex = state.selectedCategoryIndex - 1;      // 一つ上のカテゴリーを選択
       const newCategory = state.categories[newIndex];
+      commit('removeCategory', state.selectedCategoryIndex);     // 配列から削除
       commit('updateSelectedCategory', newCategory);
       commit('updateSelectedCategoryIndex', newIndex);
+      const uid = account.state.uid;
+      dispatch('getTodo', uid);
     }
-    // 配列から削除
     // firestoreから削除
   }
 };
