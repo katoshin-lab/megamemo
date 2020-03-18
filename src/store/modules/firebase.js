@@ -36,7 +36,7 @@ const mutations = {
   updateSelectedTodoIndex(state, selectedTodoIndex) {
     state.selectedTodoIndex = selectedTodoIndex;
   },
-  updateSelectedCstegory(state, selectedCategory) {
+  updateSelectedCategory(state, selectedCategory) {
     state.selectedCategory = selectedCategory;
   },
   updateSelectedCategoryIndex(state, selectedCategoryIndex) {
@@ -50,7 +50,8 @@ const mutations = {
   },
   toggleLoading(state, loading) {
     state.loading = loading
-  }
+  },
+
 };
 
 const actions = {
@@ -159,10 +160,21 @@ const actions = {
     const selectedCategory = state.categories[index];
     if (selectedCategory !== state.selectedCategory) {
       const uid = account.state.uid
-      commit('updateSelectedCstegory', selectedCategory);
+      commit('updateSelectedCategory', selectedCategory);
       commit('updateSelectedCategoryIndex', index);
       dispatch('getTodo', uid);
     }
+  },
+  deleteCategory({state, commit}) {
+    // 一つ上のカテゴリーを選択
+    if (state.selectedCategoryIndex !== 0) {
+      const newIndex = state.selectedCategoryIndex - 1;
+      const newCategory = state.categories[newIndex];
+      commit('updateSelectedCategory', newCategory);
+      commit('updateSelectedCategoryIndex', newIndex);
+    }
+    // 配列から削除
+    // firestoreから削除
   }
 };
 

@@ -38,6 +38,7 @@
       bottom
       right
       small
+      @click="deleteCategory"
     >Delete Selected Category</v-btn>
   </div>
 </template>
@@ -59,6 +60,9 @@ export default {
     addCategory() {
       this.$store.dispatch('firebase/addCategory', this.category);
       this.category = "";
+    },
+    deleteCategory() {
+      this.$store.dispatch('firebase/deleteCategory');
     }
   }
 }
