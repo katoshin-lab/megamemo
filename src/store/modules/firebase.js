@@ -137,8 +137,6 @@ const actions = {
         categoryArray.push(doc.data().label)
       })
       commit('updateCategory', categoryArray);
-      // eslint-disable-next-line no-console
-      console.log(categoryArray);
     })
     .catch(error => {
       // eslint-disable-next-line no-console

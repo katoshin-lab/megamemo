@@ -110,8 +110,6 @@
     mounted() {
       this.overlay = true
       firebase.auth().onAuthStateChanged((user) => {
-        // eslint-disable-next-line no-console
-        console.log(user);
         if (user) {
           this.$store.dispatch('firebase/getTodo', user.uid)
           this.$store.dispatch('firebase/getCategory', user.uid)
@@ -130,19 +128,6 @@
           this.dialog = true;
         }
       });
-      
-      // firebase.auth().getRedirectResult().then((result) => {
-      //   if (result.credential) {
-      //     // eslint-disable-next-line no-console
-      //     console.log(result);
-      //     const userInfo = result.user
-      //     this.$store.dispatch('account/updateUserName', userInfo, { root: true })
-      //   }
-      // })
-      // .catch((result) => {
-      //   // eslint-disable-next-line no-console
-      //   console.log(result);
-      // })
     }
   }
 </script>

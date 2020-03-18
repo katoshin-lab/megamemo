@@ -47,8 +47,6 @@ const actions = {
   loginInfo({commit}) {
     firebase.auth().getRedirectResult().then((result) => {
       if (result.credential) {
-        // eslint-disable-next-line no-console
-        console.log(result);
         commit('updateUserName', result.user.displayName);
         commit('updateUserUid', result.user.uid);
       }
