@@ -149,10 +149,8 @@ const actions = {
     commit('addCategory', category);
     const uid = account.state.uid;
     const docPath = db.collection('users').doc(uid).collection('settings').doc('category').collection('labels');
-    docPath.add({label: category})
-    .then(r => {
-      // eslint-disable-next-line no-console
-      console.log(r);
+    docPath.doc(category).set({label: category})
+    .then(() => {
     })
     .catch(e => {
       // eslint-disable-next-line no-console
@@ -170,15 +168,27 @@ const actions = {
   },
   deleteCategory({state, commit, dispatch}) {
     if (state.selectedCategoryIndex !== 0) {
-      const newIndex = state.selectedCategoryIndex - 1;      // 一つ上のカテゴリーを選択
-      const newCategory = state.categories[newIndex];
-      commit('removeCategory', state.selectedCategoryIndex);     // 配列から削除
-      commit('updateSelectedCategory', newCategory);
-      commit('updateSelectedCategoryIndex', newIndex);
       const uid = account.state.uid;
+      const todoArray = state.todos;
+      const idArray = [];
+      todoArray.forEach(todo => {
+        const id = todo.id;
+        idArray.push(id);
+      });
+      idArray.forEach(id => {
+        const path = db.collection('users').doc(uid).collection('category').doc(state.selectedCategory).collection('todo');
+        path.doc(id).delete();
+      })
+      // firestoreから削除
+      db.collection('users').doc(uid).collection('category').doc(state.selectedCategory).delete();
+      db.collection('users').doc(uid).collection('settings').doc('category').collection('labels').doc(state.selectedCategory).delete();
+      const newIndex = state.selectedCategoryIndex - 1;
+      const newCategory = state.categories[newIndex];
+      commit('removeCategory', state.selectedCategoryIndex);
+      commit('updateSelectedCategory', newCategory);      // 一つ前のカテゴリーを選択状態に
+      commit('updateSelectedCategoryIndex', newIndex);
       dispatch('getTodo', uid);
     }
-    // firestoreから削除
   }
 };
 
