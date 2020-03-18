@@ -10,6 +10,8 @@ This is simple & useful Todo memo.
 - Firebase
 - Cloud Firestore
 - Node.js
+### 動作確認環境
+Google Chrome version:80.0.3987.132 
 
 ## :star2: How to use
 ### 最初にGoogleアカウントにログインします。
