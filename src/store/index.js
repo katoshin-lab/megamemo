@@ -21,7 +21,8 @@ export default new Vuex.Store({
     todoDetailDialog: false,
   },
   getters: {
-    newTodoDialog: state => state.newTodoDialog
+    newTodoDialog: state => state.newTodoDialog,
+    todoDetailDialog: state => state.todoDetailDialog
   },
   mutations: {
     toggleNewTodoDialog(state, bool) {

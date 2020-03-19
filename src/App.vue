@@ -26,6 +26,9 @@
         />
       </v-app-bar>
       <v-content>
+        <v-card>
+          <v-card-text>category: </v-card-text>
+        </v-card>
         <v-container>
           <v-row
             align="center"
@@ -47,14 +50,14 @@
               <v-dialog
                 persistent
                 width="60%"
-                v-model="this.newTodo"
+                v-model="newTodoDialog"
               >
                 <new-todo />
               </v-dialog>
               <v-dialog
                 persistent
                 width="60%"
-                v-model="this.todoDetail"
+                v-model="todoDetailDialog"
               >
                 <todo-detail />
               </v-dialog>
@@ -83,7 +86,7 @@
   import Signup from './components/Dialog/Signup';
   import newTodo from './components/Dialog/NewTodo';
   import TodoDetail from './components/Dialog/TodoDetail';
-  import { mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   export default {
     components: {
@@ -102,10 +105,7 @@
       color: "indigo darken-4",
     }),
     computed: {
-      ...mapState({
-        newTodo: 'newTodoDialog',
-        todoDetail: 'todoDetailDialog'
-      })
+      ...mapGetters(['newTodoDialog', 'todoDetailDialog'])
     },
     mounted() {
       this.overlay = true
