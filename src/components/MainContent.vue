@@ -51,12 +51,12 @@
       </v-app-bar>
       <v-sheet
         id="todo-cards"
-        max-height="80vh"
+        max-height="74vh"
         class="cards overflow-y-auto"
       >
         <div
           v-for="(todo, index) in todos"
-          :key="todo.title"
+          :key="todo.index"
         >
           <todo-card
             :todo="todo"
