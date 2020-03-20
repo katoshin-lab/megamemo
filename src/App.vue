@@ -26,9 +26,7 @@
         />
       </v-app-bar>
       <v-content>
-        <v-card>
-          <v-card-text>category: </v-card-text>
-        </v-card>
+        <nav-bar />
         <v-container>
           <v-row
             align="center"
@@ -83,6 +81,7 @@
   import HeaderAccount from './components/HeaderAccount';
   import DrawerContent from './components/DrawerContent';
   import MainContent from './components/MainContent';
+  import NavBar from './components/NavBar';
   import Signup from './components/Dialog/Signup';
   import newTodo from './components/Dialog/NewTodo';
   import TodoDetail from './components/Dialog/TodoDetail';
@@ -94,6 +93,7 @@
       Signup,
       DrawerContent,
       MainContent,
+      NavBar,
       newTodo,
       TodoDetail
     },

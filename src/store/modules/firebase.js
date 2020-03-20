@@ -18,6 +18,7 @@ const getters = {
   selectedTodo: state => state.selectedTodo,
   selectedTodoIndex: state => state.selectedTodoIndex,
   categories: state => state.categories,
+  selectedCategory: state => state.selectedCategory,
 };
 
 const mutations = {
