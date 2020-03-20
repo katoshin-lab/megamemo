@@ -67,7 +67,7 @@
         app
         color="primary"
       >
-        <span>&copy; 2019</span>
+        <span>&copy; 2020</span>
       </v-footer>
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
