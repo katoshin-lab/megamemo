@@ -10,7 +10,7 @@
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
-            <span></span>
+            <span>{{ time }}</span>
           </v-col>
         </v-row>
       </v-container>
@@ -22,7 +22,30 @@ import { mapGetters } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters ('firebase', ['selectedCategory'])
+    ...mapGetters ('firebase', ['selectedCategory']),
+    time() {
+      const weeks = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+      
+        let now = new Date();
+        let year = now.getYear();
+        let month = now.getMonth() + 1;
+        let day = now.getDate();
+        let week = weeks[ now.getDay() ];
+        let hour = now.getHours();
+        let min = now.getMinutes();
+        let sec = now.getSeconds();
+        let colon = ':';
+
+        if (month < 10) { month = "0" + month; }
+        if (day < 10) { day = "0" + day; }
+        if (hour < 10) { hour = "0" + hour; }
+        if (min < 10) { min = "0" + min; }
+        if (sec < 10) { sec = "0" + sec; }
+        if ((sec % 2 ) !== 0 ) { colon = "\t" }
+      
+      return year + '-' + month + '-' + day + '(' + week + ')\t' + hour + colon + min + colon + sec
+      
+    }
   }
 }
 </script>
