@@ -31,7 +31,7 @@ export default {
     const weeks = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
     setInterval(() => {
       let now = new Date();
-      let year = now.getYear();
+      let year = now.getFullYear();
       let month = now.getMonth() + 1;
       let day = now.getDate();
       let week = weeks[ now.getDay() ];
