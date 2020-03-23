@@ -46,7 +46,7 @@ export default {
       if (min < 10) { min = "0" + min; }
       if (sec < 10) { sec = "0" + sec; }
       if ((sec % 2 ) !== 0 ) { colon = "\t" }
-      this.time = year + '-' + month + '-' + day + '(' + week + ')\t' + hour + ':' + min + colon + sec
+      this.time = year + '\t/\t' + month + '\t/\t' + day + '\t(' + week + ')\t' + hour + ':' + min + colon + sec
     }, 500)
   }
 }
