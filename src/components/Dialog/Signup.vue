@@ -28,8 +28,8 @@
         <v-expand-transition>
           <div v-show="show">
             <v-divider></v-divider>
-            <v-text-field label="ID" :value="email" readonly></v-text-field>
-            <v-text-field label="Password" :value="password" type="password" readonly></v-text-field>
+            <v-text-field label="ID" :value="guest.email" readonly></v-text-field>
+            <v-text-field label="Password" :value="guest.password" type="password" readonly></v-text-field>
             <v-btn @click="signInGuest">Submit</v-btn>
           </div>
         </v-expand-transition>
@@ -42,15 +42,17 @@
 export default {
   data: () => ({
     show: false,
-    email: "test@test.com",
-    password: "password"
+    guest: {
+      email: "test@test.com",
+      password: "password"
+    }
   }),
   methods: {
     signIn() {
-      this.$store.dispatch('account/login', {root: true})
+      this.$store.dispatch('account/login', {root: true});
     },
     signInGuest() {
-      
+      this.$store.dispatch('account/loginGuest', this.guest);
     }
   }
 }
