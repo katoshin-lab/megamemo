@@ -10,14 +10,47 @@
         Access Your Google Account
       </v-btn>
     </v-row>
+    <v-row>
+      <v-col></v-col>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-col>
+        <v-btn
+          @click="show = !show"
+        >
+          <span>Guest</span>
+          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-expand-transition>
+          <div v-show="show">
+            <v-divider></v-divider>
+            <v-text-field label="ID" :value="email" readonly></v-text-field>
+            <v-text-field label="Password" :value="password" type="password" readonly></v-text-field>
+            <v-btn @click="signInGuest">Submit</v-btn>
+          </div>
+        </v-expand-transition>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
+  data: () => ({
+    show: false,
+    email: "test@test.com",
+    password: "password"
+  }),
   methods: {
     signIn() {
       this.$store.dispatch('account/login', {root: true})
+    },
+    signInGuest() {
+      
     }
   }
 }
