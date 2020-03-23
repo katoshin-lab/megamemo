@@ -40,6 +40,18 @@ const actions = {
     const provider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithRedirect(provider);
   },
+  loginGuest({state}, guest) {
+    console.log(guest.email, guest.password);
+    firebase.auth().signInWithEmailAndPassword(guest.email, guest.password)
+    .then((res) => {
+      console.log(res);
+      
+    })
+    .catch(function(error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    });
+  },
   logout({commit}) {
     firebase.auth().signOut();
     commit('updateUserUid', null);

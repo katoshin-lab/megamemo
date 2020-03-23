@@ -111,8 +111,8 @@
       this.overlay = true
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          this.$store.dispatch('firebase/getTodo', user.uid)
-          this.$store.dispatch('firebase/getCategory', user.uid)
+          this.$store.dispatch('firebase/getTodo', user.uid);
+          this.$store.dispatch('firebase/getCategory', user.uid);
           this.$store.commit('account/updateUserName', user.displayName);
           this.$store.commit('account/updateUserUid', user.uid);
           const id = setInterval(() => {
