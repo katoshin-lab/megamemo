@@ -40,12 +40,13 @@ const actions = {
     const provider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithRedirect(provider);
   },
-  loginGuest({state}, guest) {
+  loginGuest({commit}, guest) {
     console.log(guest.email, guest.password);
     firebase.auth().signInWithEmailAndPassword(guest.email, guest.password)
     .then((res) => {
-      console.log(res);
-      
+      const name = "Guest";
+      commit('updateUserName', name);
+      commit('updateUserUid', res.user.uid);
     })
     .catch(function(error) {
       // eslint-disable-next-line no-console
