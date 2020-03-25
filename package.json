@@ -15,6 +15,7 @@
     "firebase-admin": "^8.9.2",
     "firebase-functions": "^3.3.0",
     "http2": "^3.3.7",
+    "push.js": "^1.0.12",
     "vue": "^2.6.10",
     "vue-router": "^3.1.5",
     "vuetify": "^2.1.0",
