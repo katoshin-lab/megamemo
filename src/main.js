@@ -5,14 +5,19 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 import firebase from 'firebase/app';
-import { firebaseConfig } from './plugins/firebaseConfig'
+import { firebaseConfig } from './plugins/firebaseConfig';
+import { publicVapidKey } from './plugins/firebaseMessaging';
+
 import 'firebase/auth';
 import 'firebase/firestore';
 
 Vue.config.productionTip = false
 
 firebase.initializeApp(firebaseConfig);
-export const db = firebase.firestore()
+export const db = firebase.firestore();
+
+const messaging = firebase.messaging();
+messaging.usePublicVapidKey(publicVapidKey);
 
 new Vue({
   axios,
