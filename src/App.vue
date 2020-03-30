@@ -108,25 +108,6 @@
       ...mapGetters(['newTodoDialog', 'todoDetailDialog'])
     },
     mounted() {
-      // setTimeout(() => {
-      //   if (window.Notification) {
-      //     // const notificationPermission = Notification.permission;
-      //     // if (notificationPermission === "denied" || notificationPermission === "granted") {
-      //     //   // eslint-disable-next-line no-unused-vars
-      //     //   var n = new Notification("Hello World");
-      //     //   console.log(Notification.permission);
-      //     //   return;
-      //     // }
-      //     Notification.requestPermission(() => {
-      //       // eslint-disable-next-line no-unused-vars
-      //       var notification = new Notification("Hi there!");
-      //       console.log(notification);
-      //     })
-      //     // .then(function() {
-      //     // new Notification("Hello, world!");
-      //     // });
-      //   }
-      // }, 10000)
       this.overlay = true
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -139,6 +120,18 @@
               this.$store.commit('firebase/toggleLoading', false)
               this.overlay = false;
               this.dialog = false;
+              if (window.Notification) {
+                const notificationPermission = Notification.permission;
+                if (notificationPermission === "denied" || notificationPermission === "granted") {
+                  console.log(notificationPermission);
+                  return;
+                }
+                Notification.requestPermission(() => {
+                  // eslint-disable-next-line no-unused-vars
+                  var notification = new Notification("Hi there!");
+                  console.log(notification);
+                })
+              }
               clearInterval(id);
             }
           }, 200)
