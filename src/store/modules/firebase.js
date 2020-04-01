@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
-import account from './account'
-import { db } from '@/main'
+import account from './account';
+import { db } from '@/main';
 
 const state = {
   category: "Home",

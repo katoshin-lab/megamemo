@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
 
-const messaging = firebase.messaging();
+export const messaging = firebase.messaging();
 messaging.usePublicVapidKey(publicVapidKey);
 
 new Vue({
