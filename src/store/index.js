@@ -4,7 +4,8 @@ import Vuex from 'vuex';
 // import mutations from './mutations';
 import actions from './actions';
 import account from './modules/account';
-import firebase from './modules/firebase'
+import firebase from './modules/firebase';
+import messaging from './modules/messaging';
 
 Vue.use(Vuex);
 
@@ -35,6 +36,7 @@ export default new Vuex.Store({
   actions,
   modules: {
     account,
-    firebase
+    firebase,
+    messaging
   }
 })
