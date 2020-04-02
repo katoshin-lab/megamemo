@@ -122,8 +122,12 @@
               this.dialog = false;
               if (window.Notification) {
                 const notificationPermission = Notification.permission;
-                if (notificationPermission === "denied" || notificationPermission === "granted") {
+                if (notificationPermission === "denied") {
                   console.log(notificationPermission);
+                  return;
+                }
+                if (notificationPermission === "granted") {
+                  this.$store.dispatch('messaging/tokenRefresh');
                   return;
                 }
                 Notification.requestPermission(() => {
