@@ -1,7 +1,6 @@
 import { messaging } from '@/main';
 
 const state = {
-  test: "ok"
 };
 
 const getters = {
@@ -13,6 +12,17 @@ const mutations = {
 };
 
 const actions = {
+  tokenRefresh() {
+    console.log("before refresh")
+    messaging.onTokenRefresh(() => {
+      messaging.getToken().then((currentToken) => {
+        console.log(currentToken);
+      })
+      .catch((error) => {
+        console.log('Unable to refresh token', error);
+      });
+    });
+  }
 };
 
 export default {
