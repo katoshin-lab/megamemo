@@ -11,6 +11,7 @@ import { publicVapidKey } from './plugins/firebaseMessaging';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/messaging';
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
