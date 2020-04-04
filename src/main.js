@@ -21,16 +21,6 @@ export const db = firebase.firestore();
 export const messaging = firebase.messaging();
 messaging.usePublicVapidKey(publicVapidKey);
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/firebase-messaging-sw.js')
-  .then((regist) => {
-    console.log(regist);
-  })
-  .catch((error) => {
-    console.log(error);
-  })
-}
-
 new Vue({
   axios,
   router,

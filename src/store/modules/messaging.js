@@ -13,14 +13,11 @@ const mutations = {
 
 const actions = {
   tokenRefresh() {
-    console.log("before refresh")
-    messaging.onTokenRefresh(() => {
-      messaging.getToken().then((currentToken) => {
-        console.log(currentToken);
-      })
-      .catch((error) => {
-        console.log('Unable to refresh token', error);
-      });
+    messaging.getToken().then((currentToken) => {
+      console.log(currentToken);
+    })
+    .catch((error) => {
+      console.log('Unable to refresh token', error);
     });
   }
 };
