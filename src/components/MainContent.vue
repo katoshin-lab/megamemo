@@ -56,7 +56,7 @@
       >
         <div
           v-for="(todo, index) in todos"
-          :key="todo.index"
+          :key="index"
         >
           <todo-card
             :todo="todo"
