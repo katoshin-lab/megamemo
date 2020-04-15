@@ -3,6 +3,10 @@
 This is simple & useful Todo memo.  
 :point_right: https://megamemo-1420f.firebaseapp.com/
 
+## :books: 企画背景
+- VueJS・NoSQLの学習のため
+- Todoタスクの優先度と見積時間をパッと見て認識できるようなTodoメモがあれば次にどのタスクをするべきかを客観的に判断でき、私含めユーザーにとって利用価値があるものになるのではないかと考えた
+
 ## :computer: 開発環境
 - Vue.js(2.6.10)
 - Vuex(3.1.2)
